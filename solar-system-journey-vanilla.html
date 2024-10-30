@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;500&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+  <title>Solsystemet med Andreas Mogensen</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="sky-background">
+    <div class="intro-section">
+      <h1>En rejse gennem solsystemet<br>- med Andreas Mogensen</h1>
+      <p>Er du klar til at komme på en spektakulær rumrejse gennem vores solsystem! Følg med, når vi i selskab med den danske astronaut Andreas Mogensen, tager på en eventyrlig rumrejse forbi de 8 planeter i vores solsystem.<br><br> Fra vores egen planet Jorden til de fjerne, mystiske gasgiganter og iskolde yderplaneter, vil du lære om hver planet, inden du hopper videre. Prepare for lift off!</p>
+    </div>
+    <div class="astronaut" id="astronaut">👨‍🚀</div>
+
+    <!-- Jorden sektion -->
+    <section class="planet" id="earth">
+      <img src="images/earth.webp" alt="Jorden" class="planet-image" />
+      <h2>Jorden</h2>
+      <p>Jorden er den eneste planet, vi kender, der understøtter liv. Med sin overflade dækket af vand og en atmosfære rig på ilt, er den hjemsted for millioner af arter. Jordens unikke position i solsystemet gør den til et ideelt levested.</p>
+      <button class="quiz-btn" onclick="showQuiz('earthQuiz')">Take Quiz</button>
+      <div class="quiz" id="earthQuiz">
+        <p>Hvor stor en del af jordens overflade er dækket af vand?</p>
+        <button onclick="selectAnswer(this, 'C', 'earthQuiz')">A: 30%</button>
+        <button onclick="selectAnswer(this, 'C', 'earthQuiz')">B: 50%</button>
+        <button onclick="selectAnswer(this, 'C', 'earthQuiz')">C: 70%</button>
+        <p class="feedback"></p>
+      </div>
+    </section>
+
+    <!-- Merkur sektion -->
+    <section class="planet" id="mercury">
+      <img src="images/mercury.webp" alt="Merkur" class="planet-image" />
+      <h2>Merkur</h2>
+      <p>Merkur, solsystemets mindste planet og tættest på solen, har en ekstrem atmosfære. Om dagen kan temperaturen nå 430°C, mens natten fryser til minusgrader. Merkur har ingen måner og kun en tynd exosfære, som skyldes partikler blæst væk af solvinden.</p>
+      <button class="quiz-btn" onclick="showQuiz('mercuryQuiz')">Take Quiz</button>
+      <div class="quiz" id="mercuryQuiz">
+        <p>Hvilken planet er nærmest solen?</p>
+        <button onclick="selectAnswer(this, 'B', 'mercuryQuiz')">A: Venus</button>
+        <button onclick="selectAnswer(this, 'B', 'mercuryQuiz')">B: Merkur</button>
+        <button onclick="selectAnswer(this, 'C', 'mercuryQuiz')">C: Jorden</button>
+        <p class="feedback"></p>
+      </div>
+    </section>
+
+    <!-- Venus sektion -->
+    <section class="planet" id="venus">
+      <img src="images/venus.webp" alt="Venus" class="planet-image" />
+      <h2>Venus</h2>
+      <p>Venus, kendt som "jordens tvilling," er et fascinerende sted. Dens atmosfære er fyldt med tætte skyer af svovlsyre, og overfladen når ekstreme temperaturer på over 460°C. Dens rotation er retrograd, hvilket betyder, at den roterer i modsat retning af de fleste planeter.</p>
+      <button class="quiz-btn" onclick="showQuiz('venusQuiz')">Take Quiz</button>
+      <div class="quiz" id="venusQuiz">
+        <p>Hvilken planet kaldes "aftenstjernen"?</p>
+        <button onclick="selectAnswer(this, 'B', 'venusQuiz')">A: Mars</button>
+        <button onclick="selectAnswer(this, 'B', 'venusQuiz')">B: Venus</button>
+        <button onclick="selectAnswer(this, 'C', 'venusQuiz')">C: Jupiter</button>
+        <p class="feedback"></p>
+      </div>
+    </section>
+
+    <!-- Mars sektion -->
+    <section class="planet" id="mars">
+      <img src="images/mars.webp" alt="Mars" class="planet-image" />
+      <h2>Mars</h2>
+      <p>Mars, kendt som den røde planet, har en tynd atmosfære og spor af tidligere vandstrømme. NASA's rovere har opdaget interessante geologiske formationer, og forskere undersøger stadig, om Mars engang har huset liv.</p>
+      <button class="quiz-btn" onclick="showQuiz('marsQuiz')">Take Quiz</button>
+      <div class="quiz" id="marsQuiz">
+        <p>Hvad er Mars' mest kendte bjerg?</p>
+        <button onclick="selectAnswer(this, 'A', 'marsQuiz')">A: Olympus Mons</button>
+        <button onclick="selectAnswer(this, 'B', 'marsQuiz')">B: Mount Everest</button>
+        <button onclick="selectAnswer(this, 'C', 'marsQuiz')">C: Kilimanjaro</button>
+        <p class="feedback"></p>
+      </div>
+    </section>
+
+    <!-- Jupiter sektion -->
+    <section class="planet" id="jupiter">
+      <img src="images/jupiter.webp" alt="Jupiter" class="planet-image" />
+      <h2>Jupiter</h2>
+      <p>Jupiter er den største planet i solsystemet og har en kæmpestor storm, den Store Røde Plet, som har hærget i hundreder af år. Planeten har mindst 79 måner og en voldsom atmosfære med kraftige storme.</p>
+      <button class="quiz-btn" onclick="showQuiz('jupiterQuiz')">Take Quiz</button>
+      <div class="quiz" id="jupiterQuiz">
+        <p>Hvad hedder den største storm på Jupiter?</p>
+        <button onclick="selectAnswer(this, 'B', 'jupiterQuiz')">A: Den Sorte Plet</button>
+        <button onclick="selectAnswer(this, 'B', 'jupiterQuiz')">B: Den Store Røde Plet</button>
+        <button onclick="selectAnswer(this, 'C', 'jupiterQuiz')">C: Superstormen</button>
+        <p class="feedback"></p>
+      </div>
+    </section>
+
+    <!-- Saturn sektion -->
+    <section class="planet" id="saturn">
+      <img src="images/saturn.webp" alt="Saturn" class="planet-image" />
+      <h2>Saturn</h2>
+      <p>Saturn er kendt for sine spektakulære ringsystemer, som er dannet af is og støv. Den er den næststørste planet i solsystemet og har mange måner, herunder Titan, som er større end planeten Merkur.</p>
+      <button class="quiz-btn" onclick="showQuiz('saturnQuiz')">Take Quiz</button>
+      <div class="quiz" id="saturnQuiz">
+        <p>Hvad består Saturns ringe primært af?</p>
+        <button onclick="selectAnswer(this, 'A', 'saturnQuiz')">A: Is og støv</button>
+        <button onclick="selectAnswer(this, 'B', 'saturnQuiz')">B: Jord og sten</button>
+        <button onclick="selectAnswer(this, 'C', 'saturnQuiz')">C: Metal</button>
+        <p class="feedback"></p>
+      </div>
+    </section>
+
+    <!-- Uranus sektion -->
+    <section class="planet" id="uranus">
+      <img src="images/uranus.webp" alt="Uranus" class="planet-image" />
+      <h2>Uranus</h2>
+      <p>Uranus er en isgigant med en blå-grøn farve, som skyldes metan i dens atmosfære. Planeten roterer på siden, hvilket giver en unik akse og ekstreme årstider.</p>
+      <button class="quiz-btn" onclick="showQuiz('uranusQuiz')">Take Quiz</button>
+      <div class="quiz" id="uranusQuiz">
+        <p>Hvilken farve har Uranus' atmosfære?</p>
+        <button onclick="selectAnswer(this, 'B', 'uranusQuiz')">A: Rød</button>
+        <button onclick="selectAnswer(this, 'B', 'uranusQuiz')">B: Blå-grøn</button>
+        <button onclick="selectAnswer(this, 'C', 'uranusQuiz')">C: Hvid</button>
+        <p class="feedback"></p>
+      </div>
+    </section>
+
+    <!-- Neptun sektion -->
+    <section class="planet" id="neptune">
+      <img src="images/neptune.webp" alt="Neptun" class="planet-image" />
+      <h2>Neptun</h2>
+      <p>Neptun er den yderste planet i solsystemet og kendt for sine kraftige vinde og dybblå farve. Planeten har en stormfuld atmosfære og mindst 14 kendte måner.</p>
+      <button class="quiz-btn" onclick="showQuiz('neptuneQuiz')">Take Quiz</button>
+      <div class="quiz" id="neptuneQuiz">
+        <p>Hvad er den mest fremtrædende farve på Neptun?</p>
+        <button onclick="selectAnswer(this, 'C', 'neptuneQuiz')">A: Rød</button>
+        <button onclick="selectAnswer(this, 'B', 'neptuneQuiz')">B: Grøn</button>
+        <button onclick="selectAnswer(this, 'C', 'neptuneQuiz')">C: Blå</button>
+        <p class="feedback"></p>
+      </div>
+    </section>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
