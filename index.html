@@ -3,25 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Adventure: Find the Astronaut's Items!</title>
+    <title>Gæt den tætteste planet - Rumrejsen med Andreas Mogensen</title>
     <style>
         body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-family: 'Exo 2', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-color: #0c164f;
+            background: linear-gradient(135deg, #564592, #F896D8);
             color: #ffffff;
-            background-image: url('/placeholder.svg?height=1080&width=1920&text=Space+Background');
         }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+        }
+
         .game-container {
             text-align: center;
             max-width: 800px;
             width: 100%;
             padding: 20px;
-            background-color: rgba(25, 31, 100, 0.8);
+            background: linear-gradient(135deg, #564592, #F896D8);
             border-radius: 20px;
             box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
         }
@@ -421,6 +425,7 @@
                 setTimeout(launchRocket, 1000);
             } else {
                 message.textContent = 'Game over! You found ' + correctGuesses + ' out of 3 correct items.';
+                message.style.color = "#000";
             }
             disableAllItems();
         }
