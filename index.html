@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Adventure: Find the Astronaut's Items!</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #0c164f;
+            color: #ffffff;
+            background-image: url('/placeholder.svg?height=1080&width=1920&text=Space+Background');
+        }
+        .game-container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+            background-color: rgba(25, 31, 100, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        }
+        .items-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .item {
+            width: 100px;
+            height: 100px;
+            border: 4px solid #8a2be2;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            background-color: #1a237e;
+        }
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .item.correct {
+            border-color: #4CAF50;
+            border-width: 6px;
+            animation: correctAnimation 0.5s ease;
+        }
+        .item.incorrect {
+            border-color: #F44336;
+            border-width: 6px;
+            animation: incorrectAnimation 0.5s ease;
+        }
+        @keyframes correctAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes incorrectAnimation {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #8a2be2;
+        }
+        .info-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(12, 22, 79, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .info-box {
+            background-color: #1a237e;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 80%;
+            max-height: 80%;
+            overflow-y: auto;
+            position: relative;
+            color: #ffffff;
+            border: 2px solid #8a2be2;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #8a2be2;
+        }
+        .start-over-btn, .hint-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #8a2be2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .start-over-btn:hover, .hint-btn:hover {
+            background-color: #9932cc;
+        }
+        .score {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .astronaut-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 150px;
+            height: 200px;
+            z-index: 1000;
+        }
+        .astronaut {
+            width: 80px;
+            height: 120px;
+            background: url('/placeholder.svg?height=120&width=80&text=Astronaut') no-repeat;
+            background-size: contain;
+            position: absolute;
+            bottom: 40px;
+            left: 35px;
+            animation: float 3s ease-in-out infinite;
+        }
+        .astronaut-arm {
+            width: 20px;
+            height: 60px;
+            background-color: white;
+            position: absolute;
+            top: 30px;
+            right: 10px;
+            transform-origin: top center;
+        }
+        .astronaut-house {
+            width: 150px;
+            height: 120px;
+            background: url('/placeholder.svg?height=120&width=150&text=Space+House') no-repeat;
+            background-size: contain;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(20deg); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .astronaut.animate .astronaut-arm {
+            animation: wave 0.5s ease infinite;
+        }
+        .astronaut.celebrate {
+            animation: spin 1s ease-in-out;
+        }
+        .rocket {
+            width: 100px;
+            height: 200px;
+            background-image: url('/placeholder.svg?height=200&width=100&text=Rocket');
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: fixed;
+            bottom: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: bottom 2s ease-in-out;
+        }
+        .rocket::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 20px solid orange;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .rocket.launch {
+            animation: launch 2s ease-in-out forwards, wobble 0.1s ease-in-out infinite;
+        }
+        .rocket.launch::after {
+            opacity: 1;
+            animation: flame 0.1s ease-in-out infinite;
+        }
+        @keyframes launch {
+            0% { bottom: -150px; }
+            100% { bottom: 100vh; }
+        }
+        @keyframes wobble {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            25% { transform: translateX(-50%) rotate(0.5deg); }
+            75% { transform: translateX(-50%) rotate(-0.5deg); }
+        }
+        @keyframes flame {
+            0%, 100% { transform: translateX(-50%) scaleY(1); }
+            50% { transform: translateX(-50%) scaleY(1.1); }
+        }
+        .star {
+            position: fixed;
+            background-color: white;
+            width: 2px;
+            height: 2px;
+            opacity: 0;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Space Adventure: Find the Astronaut's Items!</h1>
+        <div class="score" id="score">Score: 0</div>
+        <div class="items-container" id="itemsContainer"></div>
+        <div class="message" id="message"></div>
+        <button class="hint-btn" id="hintBtn">Get a Hint</button>
+        <button class="start-over-btn" id="startOverBtn">Start Over</button>
+    </div>
+    <div class="rocket" id="rocket"></div>
+    <div class="astronaut-container">
+        <div class="astronaut-house"></div>
+        <div class="astronaut" id="astronaut">
+            <div class="astronaut-arm"></div>
+        </div>
+    </div>
+
+    <script>
+        // Game items
+        var items = [
+            { id: 1, correct: true, info: "Spacesuit: Astronauts wear this to breathe and stay safe in space!" },
+            { id: 2, correct: true, info: "Space food: Special food that doesn't float away in zero gravity!" },
+            { id: 3, correct: true, info: "Water recycler: This machine helps astronauts reuse water in space!" },
+            { id: 4, correct: false, info: "Telescope: While cool, astronauts don't need this inside their spaceship." },
+            { id: 5, correct: false, info: "Plant: Astronauts might grow plants, but it's not essential for their mission." },
+            { id: 6, correct: false, info: "Submarine: This is for underwater, not outer space!" },
+            { id: 7, correct: false, info: "Scuba gear: This is for swimming, not space walking!" },
+            { id: 8, correct: false, info: "Umbrella: It doesn't rain in space, so astronauts don't need this!" },
+            { id: 9, correct: false, info: "Bicycle: Astronauts use special exercise machines, not regular bicycles." },
+            { id: 10, correct: false, info: "Campfire: Fire is dangerous in a spaceship, so this stays on Earth!" }
+        ];
+
+        // Game variables
+        var correctGuesses = 0;
+        var totalGuesses = 0;
+        var score = 0;
+        var hintsUsed = 0;
+
+        // DOM elements
+        var itemsContainer = document.getElementById('itemsContainer');
+        var message = document.getElementById('message');
+        var startOverBtn = document.getElementById('startOverBtn');
+        var hintBtn = document.getElementById('hintBtn');
+        var scoreElement = document.getElementById('score');
+        var rocketElement = document.getElementById('rocket');
+
+        function animateAstronaut() {
+            var astronaut = document.getElementById('astronaut');
+            astronaut.classList.add('animate');
+            setTimeout(function() {
+                astronaut.classList.remove('animate');
+            }, 1000);
+        }
+
+        function celebrateAstronaut() {
+            var astronaut = document.getElementById('astronaut');
+            astronaut.classList.add('celebrate');
+            setTimeout(function() {
+                astronaut.classList.remove('celebrate');
+            }, 1000);
+        }
+
+        function launchRocket() {
+            var rocket = document.getElementById('rocket');
+            rocket.classList.add('launch');
+            createStars();
+        }
+
+        function createStars() {
+            for (var i = 0; i < 50; i++) {
+                var star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = Math.random() * window.innerWidth + 'px';
+                star.style.top = Math.random() * window.innerHeight + 'px';
+                document.body.appendChild(star);
+                animateStar(star);
+            }
+        }
+
+        function animateStar(star) {
+            var duration = Math.random() * 1 + 0.5;
+            var delay = Math.random() * 2;
+            star.style.animation = `twinkle ${duration}s ${delay}s infinite`;
+        }
+
+        // Initialize the game
+        function initializeGame() {
+            correctGuesses = 0;
+            totalGuesses = 0;
+            score = 0;
+            hintsUsed = 0;
+            message.textContent = '';
+            itemsContainer.innerHTML = '';
+            updateScore();
+
+            // Shuffle items
+            items.sort(function() { return 0.5 - Math.random() });
+
+            // Create item elements
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                var itemElement = document.createElement('div');
+                itemElement.className = 'item';
+                itemElement.innerHTML = '<img src="/placeholder.svg?height=100&width=100&text=' + item.id + '" alt="Space Item ' + item.id + '">';
+                itemElement.onclick = function(item) {
+                    return function() { guessItem(this, item); };
+                }(item);
+                itemsContainer.appendChild(itemElement);
+            }
+
+            rocketElement.classList.remove('launch');
+        }
+
+        // Handle item guess
+        function guessItem(element, item) {
+            if (element.classList.contains('correct') || element.classList.contains('incorrect')) {
+                return;
+            }
+
+            totalGuesses++;
+
+            if (item.correct) {
+                element.classList.add('correct');
+                correctGuesses++;
+                showInfoBox(item);
+                animateAstronaut();
+                score += 10;
+                updateScore();
+                if (correctGuesses === 3) {
+                    endGame(true);
+                }
+            } else {
+                element.classList.add('incorrect');
+                score -= 5;
+                updateScore();
+            }
+
+            updateMessage();
+        }
+
+        // Update message
+        function updateMessage() {
+            if (correctGuesses < 3) {
+                message.textContent = 'You\'ve found ' + correctGuesses + ' out of 3 correct astronaut items. Keep exploring!';
+            }
+        }
+
+        // Show info box
+        function showInfoBox(item) {
+            var overlay = document.createElement('div');
+            overlay.className = 'info-overlay';
+            overlay.innerHTML = '<div class="info-box">' +
+                '<button class="close-btn" onclick="closeInfoBox()">&times;</button>' +
+                '<h2>Space Item ' + item.id + ' Information</h2>' +
+                '<p>' + item.info + '</p>' +
+                '</div>';
+            document.body.appendChild(overlay);
+        }
+
+        // Close info box
+        function closeInfoBox() {
+            var overlay = document.querySelector('.info-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+        // Update score
+        function updateScore() {
+            scoreElement.textContent = 'Score: ' + score;
+        }
+
+        
+
+        // End game
+        function endGame(success) {
+            if (success) {
+                message.textContent = 'Congratulations! You found all 3 correct astronaut items!';
+                celebrateAstronaut();
+                setTimeout(launchRocket, 1000);
+            } else {
+                message.textContent = 'Game over! You found ' + correctGuesses + ' out of 3 correct items.';
+            }
+            disableAllItems();
+        }
+
+        // Disable all items
+        function disableAllItems() {
+            var items = document.querySelectorAll('.item');
+            for (var i = 0; i < items.length; i++) {
+                items[i].style.pointerEvents = 'none';
+                if (!items[i].classList.contains('correct')) {
+                    items[i].classList.add('incorrect');
+                }
+            }
+        }
+
+        // Get hint
+        function getHint() {
+            if (hintsUsed >= 3) {
+                alert('No more hints available!');
+                return;
+            }
+
+            var unguessedCorrectItems = items.filter(function(item) {
+                return item.correct && !document.querySelector('.item.correct img[alt="Space Item ' + item.id + '"]');
+            });
+
+            if (unguessedCorrectItems.length > 0) {
+                var hintItem = unguessedCorrectItems[Math.floor(Math.random() * unguessedCorrectItems.length)];
+                alert('Hint: Look for ' + hintItem.info);
+                hintsUsed++;
+                score -= 3;
+                updateScore();
+            } else {
+                alert('No more hints needed. You\'ve found all correct items!');
+            }
+        }
+
+        // Event listeners
+        startOverBtn.onclick = initializeGame;
+        hintBtn.onclick = getHint;
+
+        // Start the game
+        initializeGame();
+    </script>
+</body>
+</html>
